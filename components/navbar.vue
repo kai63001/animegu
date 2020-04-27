@@ -26,6 +26,11 @@
               </nuxt-link>
             </li>
             <li class="nav-item active">
+              <nuxt-link class="nav-link" to="/dub/">
+                Dub English
+              </nuxt-link>
+            </li>
+            <li class="nav-item active">
               <nuxt-link class="nav-link" to="/popular/">
                 Popular
               </nuxt-link>
@@ -36,12 +41,13 @@
               </nuxt-link>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
+          <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
             <input
               class="form-control mr-sm-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
+              name="s"
             >
             <button class="btn bg-main color-white my-2 my-sm-0" type="submit">
               Search

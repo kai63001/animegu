@@ -1,24 +1,12 @@
 <template>
   <div id="app">
-    <div class="banner">
-      <div class="text-banner" style="z-index:999;">
-        <h1 class="color-white">
-          ANIME GU <span v-if="page != 1">PAGE : {{ page }}</span>
-        </h1>
-        <span class="color-green"> Watch and Download Anime online free hd </span>
-      </div>
-      <div class="imgcover" style="filter: brightness(50%);">
-        <img
-          v-lazy-load
-          data-src="https://coverfiles.alphacoders.com/128/128517.png"
-          width="100%"
-          alt="AnimeGu Online"
-        >
-      </div>
-    </div>
+    <br>
+    <h1 class="color-dark text-center">
+      RESULTS : {{ search.toUpperCase() }}
+    </h1>
     <br>
     <div class="container">
-      <h3>Newest episode</h3>
+      <h3>Popular Anime</h3>
       <div class="row">
         <div v-for="game in gamedata" :key="game.name" class="col-md-2 col-6">
           <nuxt-link
@@ -26,9 +14,10 @@
             :to="
               '/anime/' +
                 game.name
-                  .replace(/[^a-zA-Z0-9 -]/g, '')
+                  .replace(/[^a-zA-Z0-9- ]/g, '')
                   .replace(/  /g, '-')
-.replace(/ /g, '-')
+                  .replace(/  /g, '-')
+                  .replace(/ /g, '-')
                   .toLowerCase()
             "
             :title="game.name.substr(0, game.name.indexOf('Episo'))"
@@ -48,25 +37,6 @@
     </div>
     <br>
     <br>
-    <paginate
-      :force-page="page"
-      :page-count="178"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Prev'"
-      :next-text="'Next'"
-      :active-class="'active'"
-      :container-class="'pagination justify-content-center'"
-      :page-class="'page-item'"
-      :next-class="'page-item'"
-      :prev-class="'page-item'"
-      :next-link-class="'page-link'"
-      :prev-link-class="'page-link'"
-      :page-link-class="'page-link'"
-    >
-      16
-    </paginate>
   </div>
 </template>
 
@@ -77,15 +47,14 @@
 import axios from 'axios'
 
 export default {
-  name: 'Index',
-  watchQuery: ['page'],
-  components: {
-  },
+  name: 'Popular',
+  watchQuery: ['s'],
+  components: {},
   async asyncData ({ query, err, req }) {
     const url = req ? 'https://' + req.headers.host : window.location.host.split(':')[0]
     console.log(url)
     const game = await axios.get(
-      'http://f21085dd.ngrok.io/api?page=' + query.page
+      'http://f21085dd.ngrok.io/api/search?s=' + query.s
     )
     // const popular = await axios.get(
     //   'https://ma-load.com/anime_api/api/popular/'
@@ -95,7 +64,7 @@ export default {
     // )
     return {
       gamedata: game.data.data,
-      page: query.page === undefined ? 1 : query.page,
+      search: query.s === undefined ? '' : query.s,
       url
     }
     // return axios
@@ -119,25 +88,20 @@ export default {
     // this.url = window.location.href
     // console.log(this.url)
   },
-  methods: {
-    clickCallback (pageNum) {
-      // window.location.href = '?page=' + pageNum
-      // this.$router.push('?page=' + pageNum)
-      this.$router.push('?page=' + pageNum)
-    }
-  },
+  methods: {},
   head () {
     return {
-      title: 'AnimeGu - Watch Anime online free full hd download',
+      title: 'AnimeGu - Watch anime ' + this.search,
       meta: [
         {
           vmid: 'description',
           name: 'description',
-          content: 'Watch and download anime cartoon free online full hd english sub and dub eng view'
+          content:
+            'Watch and download ' + this.search + ' anime cartoon free online full hd english sub and dub eng view'
         },
         {
           property: 'og:title',
-          content: 'Watch anime cartoon online free english sub hd'
+          content: 'AnimeGu - Watch anime ' + this.search
         },
         { property: 'og:site_name', content: 'AnimeGu' },
         // The list of types is available here: http://ogp.me/#types
@@ -149,12 +113,14 @@ export default {
         },
         {
           property: 'og:image',
-          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
+          content:
+            'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         },
         // Often the same as your meta description, but not always.
         {
           property: 'og:description',
-          content: 'Watch and download anime cartoon free online full hd english sub and dub eng view'
+          content:
+            'Watch and download ' + this.search + ' anime cartoon free online full hd english sub and dub eng view'
         },
 
         // Twitter card
@@ -165,31 +131,38 @@ export default {
         },
         {
           name: 'twitter:title',
-          content: 'Watch anime cartoon online free english sub hd'
+          content: 'AnimeGu - Watch anime ' + this.search
         },
         {
           name: 'twitter:description',
-          content: 'Watch and download anime cartoon free online full hd english sub and dub eng view'
+          content:
+            'Watch and download ' + this.search + ' anime cartoon free online full hd english sub and dub eng view'
         },
         // Your twitter handle, if you have one.
         { name: 'twitter:creator', content: '@alligatorio' },
         {
           name: 'twitter:image:src',
-          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
+          content:
+            'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         },
 
         // Google / Schema.org markup:
         {
           itemprop: 'name',
-          content: 'Watch anime cartoon online free english sub hd'
+          content: 'AnimeGu - Watch anime ' + this.search
         },
-        { itemprop: 'description', content: 'Watch and download anime cartoon free online full hd english sub and dub eng view' },
+        {
+          itemprop: 'description',
+          content:
+            'Watch and download ' + this.search + ' anime cartoon free online full hd english sub and dub eng view'
+        },
         {
           itemprop: 'image',
-          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
+          content:
+            'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         }
       ],
-      link: [{ rel: 'canonical', href: this.url }],
+      link: [{ rel: 'canonical', href: this.url + '/search?s=' + this.search }],
       htmlAttrs: {
         lang: 'en',
         amp: true

@@ -89,6 +89,62 @@ app.get('/movie', (req, res) => {
     })
 })
 
+app.get('/dub', (req, res) => {
+  let page = 1
+  if (req.query.page) { page = req.query.page }
+  res.setHeader('Content-Type', 'application/json')
+  axios.get('https://vidstreaming.io/recently-added-dub?page=' + page)
+    .then(function (response) {
+      // console.log(response);
+      const $ = cheerio.load(response.data)
+      const data = []
+
+      $('.video-block').each(function () {
+        data.push({
+          name: $(this).children('a').children('.name').text().trim(),
+          ep: $(this).children('a').children('.name').text().trim().substr($(this).children('a').children('.name').text().trim().indexOf('Episode ')).replace('Episode ', ''),
+          image: $(this).children('a').children('.img').children('.picture').children('img').attr('src').trim()
+        })
+      })
+      res.end(JSON.stringify({ data }))
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error)
+    })
+    .then(function () {
+      // always executed
+    })
+})
+
+app.get('/search', (req, res) => {
+  let s = 1
+  if (req.query.s) { s = req.query.s }
+  res.setHeader('Content-Type', 'application/json')
+  axios.get('https://vidstreaming.io/search.html?keyword=' + s)
+    .then(function (response) {
+      // console.log(response);
+      const $ = cheerio.load(response.data)
+      const data = []
+
+      $('.video-block').each(function () {
+        data.push({
+          name: $(this).children('a').children('.name').text().trim(),
+          ep: $(this).children('a').children('.name').text().trim().substr($(this).children('a').children('.name').text().trim().indexOf('Episode ')).replace('Episode ', ''),
+          image: $(this).children('a').children('.img').children('.picture').children('img').attr('src').trim()
+        })
+      })
+      res.end(JSON.stringify({ data }))
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error)
+    })
+    .then(function () {
+      // always executed
+    })
+})
+
 app.get('/anime/:name', (req, res) => {
   res.setHeader('Content-Type', 'application/json')
   axios.get('https://vidstreaming.io/videos/' + req.params.name)

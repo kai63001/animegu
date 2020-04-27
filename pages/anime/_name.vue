@@ -53,7 +53,7 @@
               :key="epall.name"
               class="col-md-2 pr-0 col-3"
             >
-              <nuxt-link :to="epall.url" class="text-decoration-none">
+              <nuxt-link :title="'Watch '+epall.url.replace(/-/g,' ')+' Online free'" :to="epall.url" class="text-decoration-none">
                 <div
                   v-if="epall.name != gamedata.ep"
                   class="btn btn-main-hover color-main border-main mb-3 btn-block"
@@ -79,6 +79,7 @@
             :to="
               populars.name
                 .replace(/[^a-zA-Z0-9 -]/g, '')
+                .replace(/  /g, '-')
                 .replace(/ /g, '-')
                 .toLowerCase()
             "
@@ -101,12 +102,25 @@
           </nuxt-link>
           <h3>About this video</h3>
           <p>
-            The following Anime Otome Game no Hametsu Flag shika Nai Akuyaku
-            Reijou ni Tensei shite Shimatta… Episode 4 English Subbed has been
-            released in high quality video at 9Anime, Watch and Download Free
-            Otome Game no Hametsu Flag shika Nai Akuyaku Reijou ni Tensei shite
-            Shimatta… Episode 4 Eng SUB Online, Stay in touch with 9 Anime to
-            watch the latest Anime Updates.
+            The following Anime <nuxt-link
+              :to="gamedata.name
+                .replace(/[^a-zA-Z0-9 -]/g, '')
+                .replace(/  /g, '-')
+                .replace(/ /g, '-')
+                .toLowerCase()"
+              class="color-green"
+            >
+              {{ gamedata.name }}
+            </nuxt-link> has been released in high
+            quality video at <nuxt-link to="/" class="color-green">
+              AnimeGu
+            </nuxt-link>, Watch and Download Free
+            <nuxt-link class="color-green" to="">
+              {{ gamedata.name_ }}
+            </nuxt-link> Online, Stay in touch with <nuxt-link to="/" class="color-green">
+              AnimeGu
+            </nuxt-link> to watch the
+            latest Anime Updates.
           </p>
         </div>
       </div>
@@ -130,12 +144,13 @@ import axios from 'axios'
 
 export default {
   name: 'AnimeName',
-  components: {
-  },
+  components: {},
   async asyncData ({ params, req }) {
-    const url = req ? req.headers.host + '/anime/' + params.name : window.location.host.split(':')[0]
+    const url = req
+      ? 'https://' + req.headers.host + '/anime/' + params.name
+      : window.location.host.split(':')[0]
     const game = await axios.get(
-      `http://localhost:3000/api/anime/${params.name}`
+      `http://f21085dd.ngrok.io/api/anime/${params.name}`
     )
     return { gamedata: game.data, url }
   },
@@ -158,7 +173,7 @@ export default {
       })
 
       return setup({
-        baseURL: 'http://localhost:3000',
+        baseURL: 'http://f21085dd.ngrok.io',
         cache: {
           maxAge: 15 * 60 * 1000,
           store: forageStore
@@ -181,7 +196,7 @@ export default {
         {
           vmid: 'description',
           name: 'description',
-          content: 'romeo'
+          content: `Watch anime ${this.gamedata.name} online free full hd and download Watch English`
         },
         { property: 'og:title', content: this.gamedata.name },
         { property: 'og:site_name', content: 'AnimeGu' },
@@ -199,7 +214,7 @@ export default {
         // Often the same as your meta description, but not always.
         {
           property: 'og:description',
-          content: 'romeo'
+          content: `Watch anime ${this.gamedata.name} online free full hd and download Watch English`
         },
 
         // Twitter card
@@ -211,7 +226,7 @@ export default {
         { name: 'twitter:title', content: this.gamedata.name },
         {
           name: 'twitter:description',
-          content: 'romeo'
+          content: `Watch anime ${this.gamedata.name} online free full hd and download Watch English`
         },
         // Your twitter handle, if you have one.
         { name: 'twitter:creator', content: '@alligatorio' },
@@ -222,7 +237,7 @@ export default {
 
         // Google / Schema.org markup:
         { itemprop: 'name', content: this.gamedata.name },
-        { itemprop: 'description', content: 'romeo' },
+        { itemprop: 'description', content: `Watch anime ${this.gamedata.name} online free full hd and download Watch English` },
         {
           itemprop: 'image',
           content: this.gamedata.image

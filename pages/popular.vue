@@ -15,6 +15,7 @@
               '/anime/' +
                 game.name
                   .replace(/[^a-zA-Z0-9 -]/g, '')
+                  .replace(/  /g, '-')
                   .replace(/ /g, '-')
                   .toLowerCase()
             "
@@ -37,7 +38,7 @@
     <br>
     <paginate
       :force-page="page"
-      :page-count="178"
+      :page-count="11"
       :page-range="3"
       :margin-pages="2"
       :click-handler="clickCallback"
@@ -69,10 +70,10 @@ export default {
   components: {
   },
   async asyncData ({ query, err, req }) {
-    const url = req ? req.headers.host : window.location.host.split(':')[0]
+    const url = req ? 'https://' + req.headers.host : window.location.host.split(':')[0]
     console.log(url)
     const game = await axios.get(
-      'http://localhost:3000/api/popular?page=' + query.page
+      'http://f21085dd.ngrok.io/api/popular?page=' + query.page
     )
     // const popular = await axios.get(
     //   'https://ma-load.com/anime_api/api/popular/'
@@ -86,7 +87,7 @@ export default {
       url
     }
     // return axios
-    //   .get('http://localhost:3000/api?page=' + query.page)
+    //   .get('http://f21085dd.ngrok.io/api?page=' + query.page)
     //   .then((res) => {
     //     return {
     //       gamedata: res.data.data,
@@ -115,16 +116,16 @@ export default {
   },
   head () {
     return {
-      title: 'AnimeGu - Watch Anime online free full hd download',
+      title: 'AnimeGu - Watch Popular Anime online free full hd download',
       meta: [
         {
           vmid: 'description',
           name: 'description',
-          content: 'romeo'
+          content: 'Watch and download popular anime cartoon free online full hd english sub and dub eng view'
         },
         {
           property: 'og:title',
-          content: 'Watch anime cartoon online free english sub hd'
+          content: 'AnimeGu - Watch Popular Anime online free full hd download'
         },
         { property: 'og:site_name', content: 'AnimeGu' },
         // The list of types is available here: http://ogp.me/#types
@@ -136,12 +137,12 @@ export default {
         },
         {
           property: 'og:image',
-          content: 'this.gamedata.image'
+          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         },
         // Often the same as your meta description, but not always.
         {
           property: 'og:description',
-          content: 'romeo'
+          content: 'Watch and download popular anime cartoon free online full hd english sub and dub eng view'
         },
 
         // Twitter card
@@ -152,31 +153,31 @@ export default {
         },
         {
           name: 'twitter:title',
-          content: 'Watch anime cartoon online free english sub hd'
+          content: 'AnimeGu - Watch Popular Anime online free full hd download'
         },
         {
           name: 'twitter:description',
-          content: 'romeo'
+          content: 'Watch and download popular anime cartoon free online full hd english sub and dub eng view'
         },
         // Your twitter handle, if you have one.
         { name: 'twitter:creator', content: '@alligatorio' },
         {
           name: 'twitter:image:src',
-          content: 'this.gamedata.image'
+          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         },
 
         // Google / Schema.org markup:
         {
           itemprop: 'name',
-          content: 'Watch anime cartoon online free english sub hd'
+          content: 'AnimeGu - Watch Popular Anime online free full hd download'
         },
-        { itemprop: 'description', content: 'romeo' },
+        { itemprop: 'description', content: 'Watch and download popular anime cartoon free online full hd english sub and dub eng view' },
         {
           itemprop: 'image',
-          content: 'this.gamedata.image'
+          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         }
       ],
-      link: [{ rel: 'canonical', href: this.url }],
+      link: [{ rel: 'canonical', href: this.url + '/popular/' }],
       htmlAttrs: {
         lang: 'en',
         amp: true
