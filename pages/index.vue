@@ -18,7 +18,7 @@
     </div>
     <br>
     <div class="container">
-      <h3>Newest episode</h3>
+      <h3>Newest Episode Sub</h3>
       <div class="row">
         <div v-for="game in gamedata" :key="game.name" class="col-md-2 col-6">
           <nuxt-link
@@ -27,8 +27,9 @@
               '/anime/' +
                 game.name
                   .replace(/[^a-zA-Z0-9 -]/g, '')
+                  .replace(/- /g, '')
                   .replace(/  /g, '-')
-.replace(/ /g, '-')
+                  .replace(/ /g, '-')
                   .toLowerCase()
             "
             :title="game.name.substr(0, game.name.indexOf('Episo'))"
@@ -82,10 +83,10 @@ export default {
   components: {
   },
   async asyncData ({ query, err, req }) {
-    const url = req ? 'https://' + req.headers.host : window.location.host.split(':')[0]
+    const url = req ? 'https://' + req.headers.host + '/' : window.location.host.split(':')[0]
     console.log(url)
     const game = await axios.get(
-      'http://f21085dd.ngrok.io/api?page=' + query.page
+      'http://localhost:3000/api?page=' + query.page
     )
     // const popular = await axios.get(
     //   'https://ma-load.com/anime_api/api/popular/'
@@ -99,7 +100,7 @@ export default {
       url
     }
     // return axios
-    //   .get('http://f21085dd.ngrok.io/api?page=' + query.page)
+    //   .get('http://localhost:3000/api?page=' + query.page)
     //   .then((res) => {
     //     return {
     //       gamedata: res.data.data,
@@ -175,6 +176,10 @@ export default {
         { name: 'twitter:creator', content: '@alligatorio' },
         {
           name: 'twitter:image:src',
+          content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
+        },
+        {
+          name: 'twitter:image',
           content: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/553e9750160831.58c8ff8bc2909.png'
         },
 

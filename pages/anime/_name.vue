@@ -53,7 +53,13 @@
               :key="epall.name"
               class="col-md-2 pr-0 col-3"
             >
-              <nuxt-link :title="'Watch '+epall.url.replace(/-/g,' ')+' Online free'" :to="epall.url" class="text-decoration-none">
+              <nuxt-link
+                :title="
+                  'Watch ' + epall.url.replace(/-/g, ' ') + ' Online free'
+                "
+                :to="epall.url"
+                class="text-decoration-none"
+              >
                 <div
                   v-if="epall.name != gamedata.ep"
                   class="btn btn-main-hover color-main border-main mb-3 btn-block"
@@ -79,6 +85,7 @@
             :to="
               populars.name
                 .replace(/[^a-zA-Z0-9 -]/g, '')
+                .replace(/- /g, '')
                 .replace(/  /g, '-')
                 .replace(/ /g, '-')
                 .toLowerCase()
@@ -102,25 +109,25 @@
           </nuxt-link>
           <h3>About this video</h3>
           <p>
-            The following Anime <nuxt-link
-              :to="gamedata.name
-                .replace(/[^a-zA-Z0-9 -]/g, '')
-                .replace(/  /g, '-')
-                .replace(/ /g, '-')
-                .toLowerCase()"
+            The following Anime
+            <nuxt-link
+              :to="params"
               class="color-green"
             >
               {{ gamedata.name }}
-            </nuxt-link> has been released in high
-            quality video at <nuxt-link to="/" class="color-green">
+            </nuxt-link>
+            has been released in high quality video at
+            <nuxt-link to="/" class="color-green">
               AnimeGu
             </nuxt-link>, Watch and Download Free
-            <nuxt-link class="color-green" to="">
+            <nuxt-link class="color-green" :to="params">
               {{ gamedata.name_ }}
-            </nuxt-link> Online, Stay in touch with <nuxt-link to="/" class="color-green">
+            </nuxt-link>
+            Online, Stay in touch with
+            <nuxt-link to="/" class="color-green">
               AnimeGu
-            </nuxt-link> to watch the
-            latest Anime Updates.
+            </nuxt-link>
+            to watch the latest Anime Updates.
           </p>
         </div>
       </div>
@@ -150,9 +157,9 @@ export default {
       ? 'https://' + req.headers.host + '/anime/' + params.name
       : window.location.host.split(':')[0]
     const game = await axios.get(
-      `http://f21085dd.ngrok.io/api/anime/${params.name}`
+      `http://localhost:3000/api/anime/${params.name}`
     )
-    return { gamedata: game.data, url }
+    return { gamedata: game.data, url, params: params.name }
   },
   data () {
     return {
@@ -173,7 +180,7 @@ export default {
       })
 
       return setup({
-        baseURL: 'http://f21085dd.ngrok.io',
+        baseURL: 'http://localhost:3000',
         cache: {
           maxAge: 15 * 60 * 1000,
           store: forageStore
@@ -234,10 +241,17 @@ export default {
           name: 'twitter:image:src',
           content: this.gamedata.image
         },
+        {
+          name: 'twitter:image',
+          content: this.gamedata.image
+        },
 
         // Google / Schema.org markup:
         { itemprop: 'name', content: this.gamedata.name },
-        { itemprop: 'description', content: `Watch anime ${this.gamedata.name} online free full hd and download Watch English` },
+        {
+          itemprop: 'description',
+          content: `Watch anime ${this.gamedata.name} online free full hd and download Watch English`
+        },
         {
           itemprop: 'image',
           content: this.gamedata.image

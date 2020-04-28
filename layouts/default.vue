@@ -3,20 +3,23 @@
     <Navbar />
     <nuxt />
     <br>
-    <footer>
+    <Footer />
+    <!-- <footer>
       <div class="container">
         asd
       </div>
-    </footer>
+    </footer> -->
   </div>
 </template>
 
 <script>
 const Navbar = () => import('~/components/navbar')
+const Footer = () => import('~/components/footer')
 
 export default {
   components: {
-    Navbar
+    Navbar,
+    Footer
   }
 }
 </script>
@@ -29,12 +32,6 @@ export default {
 
 body {
     font-family: 'romeo' !important;
-}
-
-footer{
-    background: #ef476f;
-    color: white;
-    padding: 35px 0px;
 }
 
 .color-white {

@@ -3,8 +3,32 @@ const app = express()
 const cors = require('cors')
 const axios = require('axios')
 const cheerio = require('cheerio')
+const con = require('../db/server')
 
 app.use(cors())
+
+app.get('/sitemap_anime_sub', function (req, res, next) {
+  const perpage = 10000
+  let page
+  if (req.query.page) {
+    page = req.query.page
+  } else {
+    page = 1
+  }
+  const start = (page - 1) * perpage
+  con.query('SELECT a_name FROM anime', function (_err, resquerter) {
+    con.query('SELECT a_name FROM anime limit ? , ? ', [start, perpage], function (_err, resquert) {
+      const lastPage = Math.ceil(resquerter.length / perpage)
+      console.log(lastPage)
+      if (page > lastPage) {
+        res.redirect('/404')
+      } else {
+        res.header('Content-Type', 'text/xml')
+        res.send({ resquert })
+      }
+    })
+  })
+})
 
 app.get('/', (req, res) => {
   let page = 1
